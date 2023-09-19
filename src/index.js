@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require('mongoose');
 // const authRoute = require('../routes/auth')
 const blogsRoute = require('../routes/blogs')
+const profileRoute = require('../routes/profileBlogs')
+
 const dotenv = require('dotenv')
 
 dotenv.config();
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 
 // app.use('/api/auth', authRoute)
 app.use('/api/blogs', blogsRoute)
+app.use('/api/profile',profileRoute)
 
 
 const port = process.env.PORT || 8080

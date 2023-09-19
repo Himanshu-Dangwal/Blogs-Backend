@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const User = require('./User')
 
 const blogsSchema = new Schema({
     title: {
@@ -27,7 +28,7 @@ const blogsSchema = new Schema({
     },
     downvote : {
         type : Number
-    }
+    },
 
 }, { timestamps: true })
 

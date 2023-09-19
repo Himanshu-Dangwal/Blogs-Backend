@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateNewBlog} = require('../middlewares/validateNewBlog')
-const {fetchAllBlogs,addBlog,updateBlog,deleteBlog} = require('../controllers/blogs')
+const {fetchAllBlogsUser,addBlog,updateBlog,deleteBlog} = require('../controllers/blogs')
 const catchAsync = require('../utils/catchAsync')
 
-router.get('/', fetchAllBlogs)
+router.get('/', fetchUser, catchAsync(fetchAllBlogsUser))
 
 // Get all the notes using : POST /api/blogs/
 router.post('/', fetchUser, validateNewBlog, catchAsync(addBlog))

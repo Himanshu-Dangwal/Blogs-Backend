@@ -1,9 +1,18 @@
 const Blogs = require("../models/Blogs")
 
+//Fetch all blogs main screen
 module.exports.fetchAllBlogs = async (req, res) => {
+    const blogs = await Blogs.find({})
+    res.status(201).json(blogs)
+    // res.status(201).json({message : "All blogs fetched"})
+}
+
+//Fetch All BLogs w.r.t a user
+module.exports.fetchAllBlogsUser = async (req, res) => {
     const { id } = req.user
     const blogs = await Blogs.find({ user: id })
     res.status(201).json(blogs)
+    // res.status(201).json({message : "All blogs fetched"})
 }
 
 module.exports.addBlog = async (req, res) => {
