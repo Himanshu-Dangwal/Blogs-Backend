@@ -7,10 +7,10 @@ const catchAsync = require('../utils/catchAsync')
 
 router.get('/', fetchUser, catchAsync(fetchAllBlogsUser))
 
-// Get all the notes using : POST /api/blogs/
+// Get all the blogs using : POST /api/blogs/
 router.post('/', fetchUser, validateNewBlog, catchAsync(addBlog))
 
-// Update the notes using: PUT /api/blogs
+// Update blogss using: PUT /api/blogs
 router.put('/:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
 
 // Delete the notes using: PUT /api/blogs

@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose');
-// const authRoute = require('../routes/auth')
+const authRoute = require('../routes/auth')
 const blogsRoute = require('../routes/blogs')
 const profileRoute = require('../routes/profileBlogs')
 
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
     res.send("Hello world")
 })
 
-// app.use('/api/auth', authRoute)
+app.use('/api/auth', authRoute)
 app.use('/api/blogs', blogsRoute)
 app.use('/api/profile',profileRoute)
 
