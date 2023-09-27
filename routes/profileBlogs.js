@@ -18,6 +18,6 @@ router.delete('/deleteBlog/:id', fetchUser, catchAsync(deleteBlog))
 
 // Comment Route : Any user can comment on a post if the user is logged in
 // router.put()
-// router.post('/addComment:id'.fetchUser,catchAsync(addCommentToBlog))
+router.post('/addComment:id',fetchUser,catchAsync(addCommentToBlog))
 
 module.exports = router

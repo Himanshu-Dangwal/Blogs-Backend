@@ -116,40 +116,38 @@ module.exports.deleteBlog = async (req, res) => {
   //Adding comments (nested as well as simple)
 
   // Function to add a comment to a blog post (including nested comments)
-module.exports.addCommentToBlog = async (req, res) => {
+  module.exports.addCommentToBlog = async (req, res) => {
     try {
-      const { message, parentCommentId } = req.body; // Include parentCommentId in the request body
+      const { message, parentCommentId } = req.body;
       const userId = req.user.id;
       const blogId = req.params.id;
-      // Find the blog post by its ObjectId
+  
       const blog = await Blog.findById(blogId);
   
       if (!blog) {
         return res.status(404).json({ message: 'Blog post not found' });
       }
   
-      // Create a new comment object
       const newComment = new Comment({
-        user: userId, // User ObjectId who is adding the comment
-        message,
+        user: userId,
+        message: message,
         like: 0,
-        isNested: !!parentCommentId, // Check if it's a nested comment
-        parentComment : parentCommentId,
-        blog : blogId
+        isNested: !!parentCommentId,
+        parentComment: parentCommentId,
+        blog: blogId,
       });
   
-      // If it's a nested comment, find the parent comment and add the new comment to it
       if (parentCommentId) {
         const parentComment = await Comment.findById(parentCommentId);
-        if (parentComment) {
-          parentComment.comments.push(newComment);
-          await parentComment.save();
-        } else {
+        if (!parentComment) {
           return res.status(404).json({ message: 'Parent comment not found' });
         }
+        parentComment.comments.push(newComment);
+        await parentComment.save();
+        await newComment.save();
       } else {
-        // If it's a top-level comment, push it to the blog post's comments array
         blog.comments.push(newComment);
+        await newComment.save()
         await blog.save();
       }
   
