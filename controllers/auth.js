@@ -34,7 +34,9 @@ module.exports.loginUser = async (req, res) => {
 
 module.exports.getUser = async (req, res) => {
     const userId = req.user.id
+    console.log(userId);
     const user = await User.findById(userId).select("-password")
+    console.log(user);
     res.status(201).json(user)
 }
 

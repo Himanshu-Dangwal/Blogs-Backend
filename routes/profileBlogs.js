@@ -8,12 +8,16 @@ const catchAsync = require('../utils/catchAsync')
 router.get('/', fetchUser, catchAsync(fetchAllBlogsUser))
 
 // Get all the blogs using : POST /api/blogs/
-router.post('/', fetchUser, validateNewBlog, catchAsync(addBlog))
+router.post('/addBlog', fetchUser, validateNewBlog, catchAsync(addBlog))
 
-// Update blogss using: PUT /api/blogs
-router.put('/:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
+// Update the blog using: PUT /api/blogs
+router.put('/updateBlog:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
 
-// Delete the notes using: PUT /api/blogs
-router.delete('/:id', fetchUser, catchAsync(deleteBlog))
+// Delete the blog using: PUT /api/blogs
+router.delete('/deleteBlog:id', fetchUser, catchAsync(deleteBlog))
+
+// Comment Route : Any user can comment on a post if the user is logged in
+// router.put()
+router.post('/addComment:id'.fetchUser,catchAsync(addCommentToBlog))
 
 module.exports = router

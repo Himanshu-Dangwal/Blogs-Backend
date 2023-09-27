@@ -2,19 +2,28 @@ const express = require("express");
 const router = express.Router();
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateNewBlog} = require('../middlewares/validateNewBlog')
-const {fetchAllBlogs,addBlog,updateBlog,deleteBlog} = require('../controllers/blogs')
+const {fetchAllBlogs,addBlog,updateBlog,deleteBlog,addCommentToBlog} = require('../controllers/blogs')
 const catchAsync = require('../utils/catchAsync')
+
+
+//Note
+/*
+    id in all routes refers to the blog Id
+*/
 
 //Get all blogs
 router.get('/', fetchAllBlogs)
 
 // Add new blog using : POST /api/blogs/
-router.post('/', fetchUser, validateNewBlog, catchAsync(addBlog))
+router.post('/addBlog', fetchUser, validateNewBlog, catchAsync(addBlog))
 
 // Update the blog using: PUT /api/blogs
-router.put('/:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
+router.put('/updateBlog:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
 
 // Delete the blog using: PUT /api/blogs
-router.delete('/:id', fetchUser, catchAsync(deleteBlog))
+router.delete('/deleteBlog:id', fetchUser, catchAsync(deleteBlog))
 
+// Comment Route : Any user can comment on a post if the user is logged in
+// router.put()
+router.post('/addComment:id'.fetchUser,catchAsync(addCommentToBlog))
 module.exports = router
