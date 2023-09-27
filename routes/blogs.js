@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateNewBlog} = require('../middlewares/validateNewBlog')
-const {fetchAllBlogs,addBlog,updateBlog,deleteBlog,addCommentToBlog} = require('../controllers/blogs')
+const {fetchAllBlogs,addBlog,updateBlog,deleteBlog,addCommentToBlog,voteBlog} = require('../controllers/blogs')
 const catchAsync = require('../utils/catchAsync')
 
 
@@ -26,4 +26,8 @@ router.delete('/deleteBlog/:id', fetchUser, catchAsync(deleteBlog))
 // Comment Route : Any user can comment on a post if the user is logged in
 // router.put()
 router.post('/addComment/:id',fetchUser,catchAsync(addCommentToBlog))
+
+router.post('/vote/:id',fetchUser,catchAsync(voteBlog))
+
+
 module.exports = router

@@ -45,6 +45,54 @@ module.exports.addBlog = async (req, res) => {
     }
   };
 
+//Upvote a vlog
+module.exports.voteBlog = async (req,res) => {
+    
+    const { voteType } = req.body;
+    const userId = req.user.id
+    const blogId = req.params.id
+  
+    try {
+      // Find the blog post by its ObjectId
+      const blog = await Blog.findById(blogId);
+  
+      if (!blog) {
+        return res.status(404).json({ message: 'Blog post not found' });
+      }
+  
+      // Check if the user has already voted on this blog
+    //   if (blog.votedBy.includes(userId)) {
+    //     return res.status(400).json({ message: 'User has already voted on this blog' });
+    //   }
+  
+      // Update the vote count based on voteType ('upvote' or 'downvote')
+      if (voteType === 'upvote') {
+        blog.upvotes++;
+      } else if (voteType === 'downvote') {
+        blog.downvotes++;
+      } else {
+        return res.status(400).json({ message: 'Invalid vote type' });
+      }
+  
+      // Add the user to the votedBy array
+    //   blog.votedBy.push(userId);
+  
+      // Save the updated blog post
+      await blog.save();
+  
+      res.status(200).json({ message: 'Vote recorded successfully' });
+    } catch (error) {
+      console.error('Error recording vote:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+
+
+
+
+
+
 
 //To update a blog (Send Blogs id in req and auth token (to get the user id))
 
