@@ -102,7 +102,8 @@ module.exports.deleteBlog = async (req, res) => {
       }
   
       // Delete the blog post
-      await blog.remove();
+    //   await blog.remove();
+    await Blog.findByIdAndDelete(blogId);
   
       res.status(200).json({ message: 'Blog post deleted successfully' });
     } catch (error) {
