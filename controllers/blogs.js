@@ -11,6 +11,8 @@ module.exports.fetchAllBlogs = async (req, res) => {
 //Fetch All BLogs w.r.t a user
 module.exports.fetchAllBlogsUser = async (req, res) => {
     const { id } = req.user
+    console.log(req.user);
+    console.log(id);
     const blogs = await Blog.find({ user: id })
     res.status(201).json(blogs)
     // res.status(201).json({message : "All blogs fetched"})
@@ -128,6 +130,8 @@ module.exports.addCommentToBlog = async (req, res) => {
         message,
         like: 0,
         isNested: !!parentCommentId, // Check if it's a nested comment
+        parentComment : parentCommentId,
+        blog : blogId
       });
   
       // If it's a nested comment, find the parent comment and add the new comment to it

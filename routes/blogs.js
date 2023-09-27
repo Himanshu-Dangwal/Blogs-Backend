@@ -18,12 +18,12 @@ router.get('/', fetchAllBlogs)
 router.post('/addBlog', fetchUser, validateNewBlog, catchAsync(addBlog))
 
 // Update the blog using: PUT /api/blogs
-router.put('/updateBlog:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
+router.put('/updateBlog/:id', fetchUser, validateNewBlog, catchAsync(updateBlog))
 
 // Delete the blog using: PUT /api/blogs
-router.delete('/deleteBlog:id', fetchUser, catchAsync(deleteBlog))
+router.delete('/deleteBlog/:id', fetchUser, catchAsync(deleteBlog))
 
 // Comment Route : Any user can comment on a post if the user is logged in
 // router.put()
-router.post('/addComment:id'.fetchUser,catchAsync(addCommentToBlog))
+// router.post('/addComment:id'.fetchUser,catchAsync(addCommentToBlog))
 module.exports = router
