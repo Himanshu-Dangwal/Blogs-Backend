@@ -53,6 +53,9 @@ module.exports.updateBlog = async (req, res) => {
       const { title, description, tag } = req.body; // Include blogId, userId, title, description, and tag in the request body
       const userId = req.user.id;  
       const blogId = req.params.id;
+
+      console.log(userId);
+      console.log(blogId);
       // Find the blog post by its ObjectId
       const blog = await Blog.findById(blogId);
   
