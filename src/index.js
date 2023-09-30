@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const authRoute = require('../routes/auth')
 const blogsRoute = require('../routes/blogs')
 const profileRoute = require('../routes/profileBlogs')
-
+const cors = require('cors');
 const dotenv = require('dotenv')
 
 dotenv.config();
 const app = express()
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017'
+
+app.use(cors());
 
 async function connectToMongo(){
    mongoose.set("strictQuery", false);
