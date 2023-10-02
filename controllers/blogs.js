@@ -25,17 +25,25 @@ module.exports.addBlog = async (req, res) => {
       const { title, description, tag} = req.body; // Assuming you have these values in the request body
       const userId = req.user.id;
       // Create a new blog post object
+    //   console.log(req.user);
+
+
+      const user = await User.findById(userId);
+      console.log(user);
+
       const newBlogPost = new Blog({
         title,
         description,
         tag,
         user: userId, // User ObjectId who created the blog post
+        username : user.username,
         upvote: 0,
         downvote: 0,
         comments: [], // Initialize as an empty array for comments
       });
   
       // Save the new blog post
+      console.log(newBlogPost);
       await newBlogPost.save();
   
       res.status(201).json({ message: 'Blog post added successfully' });

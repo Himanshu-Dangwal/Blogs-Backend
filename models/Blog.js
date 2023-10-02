@@ -26,6 +26,7 @@ const blogsSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId, // User who created the blog post
     ref: 'User',
   },
+  username : String,
   upvote: Number,
   downvote: Number,
   comments: [

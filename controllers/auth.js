@@ -40,6 +40,8 @@ module.exports.getUser = async (req, res) => {
     res.status(201).json(user)
 }
 
+
+
 module.exports.forgotPassword = async (req, res, next) => {
     const { email } = req.body
     const user = await User.findOne({ email })
