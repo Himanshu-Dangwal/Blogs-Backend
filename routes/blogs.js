@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateNewBlog} = require('../middlewares/validateNewBlog')
-const {fetchAllBlogs,addBlog,updateBlog,deleteBlog,addCommentToBlog,voteBlog} = require('../controllers/blogs')
+const {fetchAllBlogs,addBlog,updateBlog,deleteBlog,addCommentToBlog,voteBlog,getComment} = require('../controllers/blogs')
 const catchAsync = require('../utils/catchAsync')
 
 
@@ -27,8 +27,11 @@ router.delete('/deleteBlog/:id', fetchUser, catchAsync(deleteBlog))
 // router.put()
 router.post('/addComment/:id',fetchUser,catchAsync(addCommentToBlog))
 
-router.post('/vote/:id',fetchUser,catchAsync(voteBlog))
+//Upvoter Downvote
+router.post('/vote/:id',fetchUser,catchAsync(voteBlog)) 
 
 
+//Fetch Comment
 
+router.get("/getcomment/:id",catchAsync(getComment))    //Here it will be a comment id
 module.exports = router

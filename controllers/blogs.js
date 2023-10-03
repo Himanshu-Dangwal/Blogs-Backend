@@ -19,6 +19,17 @@ module.exports.fetchAllBlogsUser = async (req, res) => {
     // res.status(201).json({message : "All blogs fetched"})
 }
 
+module.exports.getComment = async(req,res) => {
+    const commentId = req.params.id;
+
+    const comment = await Comment.findById(commentId);
+
+    if(!comment){
+        res.status(404).json({message : "Comment doesn't exists"})
+    }
+
+    res.status(201).json(comment);
+}
 
 // Logged in user can add a blog
 module.exports.addBlog = async (req, res) => {
@@ -87,9 +98,9 @@ module.exports.voteBlog = async (req,res) => {
       }
   
       // Check if the user has already voted on this blog
-    //   if (blog.votedBy.includes(userId)) {
-    //     return res.status(400).json({ message: 'User has already voted on this blog' });
-    //   }
+      if (blog.votedBy.includes(userId)) {
+        return res.status(400).json({ message: 'User has already voted on this blog' });
+      }
   
       // Update the vote count based on voteType ('upvote' or 'downvote')
       if (voteType === 'upvote') {
@@ -101,7 +112,7 @@ module.exports.voteBlog = async (req,res) => {
       }
   
       // Add the user to the votedBy array
-    //   blog.votedBy.push(userId);
+      blog.votedBy.push(userId);
   
       // Save the updated blog post
       await blog.save();

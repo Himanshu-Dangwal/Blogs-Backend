@@ -32,6 +32,12 @@ const blogsSchema = new Schema({
   username : String,
   upvote: Number,
   downvote: Number,
+  votedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId, // Reference to users who have voted on this blog
+      ref: 'User',
+    },
+  ],
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId, // Reference to comments
