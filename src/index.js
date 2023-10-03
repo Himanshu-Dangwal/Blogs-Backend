@@ -35,7 +35,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/blogs', blogsRoute)
 app.use('/api/profile',profileRoute)
 
-//Comment ID : 651434da5c6b263daad249e9
+
 const port = process.env.PORT || 8080
 app.listen(port, (req, res) => {
     console.log('Listening to the port 8080');
