@@ -17,10 +17,9 @@ const blogsSchema = new Schema({
     min: 3,
   },
   tag: {
-    type: String,
-    default: 'General',
+    type: [String],
+    default: ['General'], // Default value as an array with one element
     required: true,
-    min: 3,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId, // User who created the blog post

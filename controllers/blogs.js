@@ -1,6 +1,7 @@
 const Blog = require("../models/Blog")
 const Comment = require("../models/Comment")
 const User = require("../models/User")
+const Tag = require("../models/Tag")
 //Fetch all blogs main screen
 module.exports.fetchAllBlogs = async (req, res) => {
     const blogs = await Blog.find({})
@@ -34,17 +35,33 @@ module.exports.addBlog = async (req, res) => {
       const newBlogPost = new Blog({
         title,
         description,
-        tag,
+        tag : tag,
         user: userId, // User ObjectId who created the blog post
         username : user.username,
         upvote: 0,
         downvote: 0,
         comments: [], // Initialize as an empty array for comments
       });
+
+
   
       // Save the new blog post
       console.log(newBlogPost);
       await newBlogPost.save();
+
+      for (const tagText of tag) {
+        const existingTag = await Tag.findOne({ categoryName: tagText });
+  
+        if (existingTag) {
+          // If the tag already exists, associate the blog with it
+          existingTag.category.push(newBlogPost.id);
+          await existingTag.save();
+        } else {
+          // If the tag doesn't exist, create a new one and associate the blog with it
+          const newTag = new Tag({ categoryName: tagText, category: [newBlogPost.id] });
+          await newTag.save();
+        }
+      }
   
       res.status(201).json({ message: 'Blog post added successfully' });
     } catch (error) {

@@ -14,9 +14,10 @@ module.exports.userSchemaLogin = Joi.object({
 module.exports.newBlogSchema = Joi.object({
     title: Joi.string().min(3).required(),
     description: Joi.string().min(3).required(),
-    tag: Joi.string().min(3).default('General').required(),
+    tag: Joi.array().items(Joi.string()).default(['General']).required(),
     user: Joi.string().pattern(/^[0-9a-fA-F]{24}$/), // Assuming it's a valid ObjectId string
-})
+  });
+  
 
 
 
