@@ -1,5 +1,5 @@
 const express = require("express");
-const {createUser, loginUser, getUser, forgotPassword, resetPassword} = require('../controllers/auth')
+const {createUser, loginUser, getUser, forgotPassword, resetPassword,savelater} = require('../controllers/auth')
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateUserRegister} = require('../middlewares/validateUserRegister')
 const {validateUserLogin} = require('../middlewares/validateUserLogin')
@@ -22,5 +22,8 @@ router.post('/forgotpassword', catchAsync(forgotPassword))
 
 // get logged in user details using: POST /api/auth/getuser "login required"
 router.put('/resetpassword/:resetToken', catchAsync(resetPassword))
+
+//Save - Later Route
+router.post("/savelater/:id",fetchUser, catchAsync(savelater))
 
 module.exports = router

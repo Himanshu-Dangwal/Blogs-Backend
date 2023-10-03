@@ -30,4 +30,5 @@ router.post('/addComment/:id',fetchUser,catchAsync(addCommentToBlog))
 router.post('/vote/:id',fetchUser,catchAsync(voteBlog))
 
 
+
 module.exports = router

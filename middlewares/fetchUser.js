@@ -20,6 +20,8 @@ module.exports.fetchUser = (req, res, next) => {
       // Token is valid, you can access the user's data from 'decoded'
       req.user = decoded.user;
       // console.log(decoded);
+      console.log(req.user);
+      
       next();
     })    
 }

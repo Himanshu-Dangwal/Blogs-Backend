@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const crypto = require('crypto')
+const Blog = require("./Blog")
 
 const userSchema = new Schema({
     username: {
@@ -21,6 +22,10 @@ const userSchema = new Schema({
         unique: [true, "email must be unique"],
         required: true,
     },
+    later : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Blog'
+    }],
     resetPasswordToken: String,
     resetPasswordExpire: String,
 

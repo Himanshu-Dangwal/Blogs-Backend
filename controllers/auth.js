@@ -40,6 +40,38 @@ module.exports.getUser = async (req, res) => {
     res.status(201).json(user)
 }
 
+module.exports.savelater = async (req,res) => {
+    const userId = req.user.id;
+    const blogId = req.params.id;
+
+    const {saveType} = req.body;
+    // console.log("I am a controller")
+    const user = await User.findById(userId)
+    if(!user){
+        res.status(404).json({message : "User not found"});
+    }
+
+    console.log(user);
+
+    if(saveType == "save"){
+        user.later.push(blogId);
+        console.log("here");
+    }else{
+        const arr = user.later;
+        let t = 0;
+        for(let i=0;i<arr.size();i++){
+            if(arr[i] === blogId){
+                t = i;
+                break;
+            }
+        }
+
+        arr.splice(t,1);
+        user.later = arr;
+    }
+    await user.save();
+    res.status(200).json({message : "Successfully added to later"})
+}
 
 
 module.exports.forgotPassword = async (req, res, next) => {
