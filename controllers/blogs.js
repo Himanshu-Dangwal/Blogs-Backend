@@ -23,7 +23,7 @@ module.exports.fetchAllBlogsUser = async (req, res) => {
 // Logged in user can add a blog
 module.exports.addBlog = async (req, res) => {
     try {
-      const { title, description, tag} = req.body; // Assuming you have these values in the request body
+      const { title, description, tag, imageUrl} = req.body; // Assuming you have these values in the request body
       const userId = req.user.id;
       // Create a new blog post object
     //   console.log(req.user);
@@ -36,6 +36,7 @@ module.exports.addBlog = async (req, res) => {
         title,
         description,
         tag : tag,
+        imageUrl : imageUrl,
         user: userId, // User ObjectId who created the blog post
         username : user.username,
         upvote: 0,

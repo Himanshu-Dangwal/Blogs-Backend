@@ -21,6 +21,10 @@ const blogsSchema = new Schema({
     default: ['General'], // Default value as an array with one element
     required: true,
   },
+  imageUrl : {
+    type : String,
+    default : "",
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId, // User who created the blog post
     ref: 'User',
