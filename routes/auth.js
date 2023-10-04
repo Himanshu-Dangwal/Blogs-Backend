@@ -1,5 +1,5 @@
 const express = require("express");
-const {createUser, loginUser, getUser, forgotPassword, resetPassword,savelater} = require('../controllers/auth')
+const {createUser, loginUser, getUser,savelater} = require('../controllers/auth')
 const {fetchUser} = require('../middlewares/fetchUser')
 const {validateUserRegister} = require('../middlewares/validateUserRegister')
 const {validateUserLogin} = require('../middlewares/validateUserLogin')
@@ -18,10 +18,10 @@ router.post('/login', validateUserLogin, catchAsync(loginUser))
 router.post('/getuser',fetchUser, catchAsync(getUser))
 
 // get logged in user details using: POST /api/auth/getuser "login required"
-router.post('/forgotpassword', catchAsync(forgotPassword))
+// router.post('/forgotpassword', catchAsync(forgotPassword))
 
-// get logged in user details using: POST /api/auth/getuser "login required"
-router.put('/resetpassword/:resetToken', catchAsync(resetPassword))
+// // get logged in user details using: POST /api/auth/getuser "login required"
+// router.put('/resetpassword/:resetToken', catchAsync(resetPassword))
 
 //Save - Later Route
 router.post("/savelater/:id",fetchUser, catchAsync(savelater))
