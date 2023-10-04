@@ -31,6 +31,7 @@ module.exports.getComment = async(req,res) => {
     res.status(201).json(comment);
 }
 
+
 // Logged in user can add a blog
 module.exports.addBlog = async (req, res) => {
     try {
@@ -143,7 +144,6 @@ module.exports.updateBlog = async (req, res) => {
       console.log(blogId);
       // Find the blog post by its ObjectId
       const blog = await Blog.findById(blogId);
-  
       if (!blog) {
         return res.status(404).json({ message: 'Blog post not found' });
       }
@@ -152,7 +152,38 @@ module.exports.updateBlog = async (req, res) => {
       if (blog.user.toString() !== userId) {
         return res.status(403).json({ message: 'You do not have permission to update this blog post' });
       }
+      
+      //Removing the existing tags
+      const earlierTags = blog.tag;
+      for (const tagText of earlierTags) {
+        const existingTag = await Tag.findOne({ categoryName: tagText });
+        let t = 0;
+        for(let i=0;i<existingTag.size();i++){
+            if(existingTag[i] == blogId){
+                t == i;
+                break;
+            }
+        }
+
+        existingTag.splice(t,1);
+        await existingTag.save();
+      }
+
+      //Adding the new tags
+      for (const tagText of tag) {
+        const existingTag = await Tag.findOne({ categoryName: tagText });
   
+        if (existingTag) {
+          // If the tag already exists, associate the blog with it
+          existingTag.category.push(newBlogPost.id);
+          await existingTag.save();
+        } else {
+          // If the tag doesn't exist, create a new one and associate the blog with it
+          const newTag = new Tag({ categoryName: tagText, category: [newBlogPost.id] });
+          await newTag.save();
+        }
+      }
+
       // Update the blog post fields
       blog.title = title;
       blog.description = description;
