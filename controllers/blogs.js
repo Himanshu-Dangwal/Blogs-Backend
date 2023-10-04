@@ -158,14 +158,14 @@ module.exports.updateBlog = async (req, res) => {
       for (const tagText of earlierTags) {
         const existingTag = await Tag.findOne({ categoryName: tagText });
         let t = 0;
-        for(let i=0;i<existingTag.size();i++){
-            if(existingTag[i] == blogId){
+        for(let i=0;i<existingTag.category.length;i++){
+            if(existingTag.category[i] == blogId){
                 t == i;
                 break;
             }
         }
 
-        existingTag.splice(t,1);
+        existingTag.category.splice(t,1);
         await existingTag.save();
       }
 
