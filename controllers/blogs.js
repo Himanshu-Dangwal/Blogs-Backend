@@ -155,34 +155,24 @@ module.exports.updateBlog = async (req, res) => {
       
       //Removing the existing tags
       const earlierTags = blog.tag;
+      console.log(earlierTags);
       for (const tagText of earlierTags) {
         const existingTag = await Tag.findOne({ categoryName: tagText });
         let t = 0;
         for(let i=0;i<existingTag.category.length;i++){
             if(existingTag.category[i] == blogId){
                 t == i;
+                console.log("ID found")
                 break;
             }
         }
-
+        console.log(existingTag);
+        console.log(t);
         existingTag.category.splice(t,1);
         await existingTag.save();
       }
 
-      //Adding the new tags
-      for (const tagText of tag) {
-        const existingTag = await Tag.findOne({ categoryName: tagText });
-  
-        if (existingTag) {
-          // If the tag already exists, associate the blog with it
-          existingTag.category.push(newBlogPost.id);
-          await existingTag.save();
-        } else {
-          // If the tag doesn't exist, create a new one and associate the blog with it
-          const newTag = new Tag({ categoryName: tagText, category: [newBlogPost.id] });
-          await newTag.save();
-        }
-      }
+
 
       // Update the blog post fields
       blog.title = title;
@@ -191,6 +181,21 @@ module.exports.updateBlog = async (req, res) => {
   
       // Save the updated blog post
       await blog.save();
+
+            //Adding the new tags
+    for (const tagText of tag) {
+        const existingTag = await Tag.findOne({ categoryName: tagText });
+  
+        if (existingTag) {
+            // If the tag already exists, associate the blog with it
+            existingTag.category.push(blog.id);
+            await existingTag.save();
+        } else {
+            // If the tag doesn't exist, create a new one and associate the blog with it
+            const newTag = new Tag({ categoryName: tagText, category: [blog.id] });
+            await newTag.save();
+        }
+    }
   
       res.status(200).json({ message: 'Blog post updated successfully' });
     } catch (error) {
