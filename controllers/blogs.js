@@ -175,10 +175,10 @@ module.exports.updateBlog = async (req, res) => {
 
 
       // Update the blog post fields
-      blog.title = title;
-      blog.description = description;
-      blog.tag = tag;
-      blog.imageUrl = imageUrl;
+      if(title) blog.title = title;
+      if(description) blog.description = description;
+      if(tag) blog.tag = tag;
+      if(imageUrl) blog.imageUrl = imageUrl;
 
       // Save the updated blog post
       await blog.save();
