@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const authRoute = require('../routes/auth')
 const blogsRoute = require('../routes/blogs')
 const profileRoute = require('../routes/profileBlogs')
+const tagsRoute = require('../routes/tagsRoute')
 const cors = require('cors');
 const dotenv = require('dotenv')
 
@@ -34,7 +35,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoute)
 app.use('/api/blogs', blogsRoute)
 app.use('/api/profile',profileRoute)
-
+app.use('/api/tags',tagsRoute)
 
 const port = process.env.PORT || 8080
 app.listen(port, (req, res) => {
