@@ -134,76 +134,74 @@ module.exports.voteBlog = async (req,res) => {
 
 //To update a blog (Send Blogs id in req and auth token (to get the user id))
 
-module.exports.updateBlog = async (req, res) => {
-    try {
-      const { title, description, tag , imageUrl} = req.body; // Include blogId, userId, title, description, and tag in the request body
-      const userId = req.user.id;  
-      const blogId = req.params.id;
 
-      console.log(userId);
-      console.log(blogId);
-      // Find the blog post by its ObjectId
-      const blog = await Blog.findById(blogId);
-      if (!blog) {
-        return res.status(404).json({ message: 'Blog post not found' });
-      }
-  
-      // Check if the user owns the blog post
-      if (blog.user.toString() !== userId) {
-        return res.status(403).json({ message: 'You do not have permission to update this blog post' });
-      }
-      
-      //Removing the existing tags
-      const earlierTags = blog.tag;
-      console.log(earlierTags);
-      for (const tagText of earlierTags) {
+module.exports.updateBlog = async (req, res) => {
+  try {
+    console.log("I am here");
+    const userId = req.user.id;
+    const blogId = req.params.id;
+
+    // Find the blog post by its ObjectId
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog post not found' });
+    }
+
+    // Check if the user owns the blog post
+    if (blog.user.toString() !== userId) {
+      return res.status(403).json({ message: 'You do not have permission to update this blog post' });
+    }
+
+    // Update the blog post fields
+    if (req.body.title) {
+      blog.title = req.body.title;
+    }
+    if (req.body.description) {
+      blog.description = req.body.description;
+    }
+    if (req.body.tag) {
+      blog.tag = req.body.tag;
+    }
+    if (req.body.imageUrl) {
+      blog.imageUrl = req.body.imageUrl;
+    }
+
+    // Use findByIdAndUpdate to update the blog post
+    await Blog.findByIdAndUpdate(blogId, blog);
+
+    // Remove existing tags
+    if(req.body.tag){
+        const earlierTags = blog.tag;
+        for (const tagText of earlierTags) {
         const existingTag = await Tag.findOne({ categoryName: tagText });
-        let t = 0;
-        for(let i=0;i<existingTag.category.length;i++){
-            if(existingTag.category[i] == blogId){
-                t == i;
-                console.log("ID found")
-                break;
+            if (existingTag) {
+                existingTag.category.pull(blog.id);
+                await existingTag.save();
             }
         }
-        console.log(existingTag);
-        console.log(t);
-        existingTag.category.splice(t,1);
-        await existingTag.save();
-      }
 
-
-
-      // Update the blog post fields
-      if(title) blog.title = title;
-      if(description) blog.description = description;
-      if(tag) blog.tag = tag;
-      if(imageUrl) blog.imageUrl = imageUrl;
-
-      // Save the updated blog post
-      await blog.save();
-
-            //Adding the new tags
-    for (const tagText of tag) {
+        // Add new tags
+        for (const tagText of req.body.tag || []) {
         const existingTag = await Tag.findOne({ categoryName: tagText });
-  
-        if (existingTag) {
-            // If the tag already exists, associate the blog with it
-            existingTag.category.push(blog.id);
-            await existingTag.save();
-        } else {
-            // If the tag doesn't exist, create a new one and associate the blog with it
-            const newTag = new Tag({ categoryName: tagText, category: [blog.id] });
-            await newTag.save();
+            if (existingTag) {
+                existingTag.category.push(blog.id);
+                await existingTag.save();
+            } else {
+                const newTag = new Tag({ categoryName: tagText, category: [blog.id] });
+                await newTag.save();
+            }
         }
+
     }
-  
-      res.status(200).json({ message: 'Blog post updated successfully' });
-    } catch (error) {
-      console.error('Error updating blog post:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  };
+    
+    res.status(200).json({ message: 'Blog post updated successfully' });
+  } catch (error) {
+    console.error('Error updating blog post:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 
 //To delete a blog (Send Blogs id in req and auth token (to get the user id))
