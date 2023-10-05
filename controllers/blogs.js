@@ -136,7 +136,7 @@ module.exports.voteBlog = async (req,res) => {
 
 module.exports.updateBlog = async (req, res) => {
     try {
-      const { title, description, tag } = req.body; // Include blogId, userId, title, description, and tag in the request body
+      const { title, description, tag , imageUrl} = req.body; // Include blogId, userId, title, description, and tag in the request body
       const userId = req.user.id;  
       const blogId = req.params.id;
 
@@ -178,7 +178,8 @@ module.exports.updateBlog = async (req, res) => {
       blog.title = title;
       blog.description = description;
       blog.tag = tag;
-  
+      blog.imageUrl = imageUrl;
+
       // Save the updated blog post
       await blog.save();
 
