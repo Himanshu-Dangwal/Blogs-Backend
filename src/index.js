@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require('mongoose');
 const authRoute = require('../routes/auth')
@@ -5,20 +6,35 @@ const blogsRoute = require('../routes/blogs')
 const profileRoute = require('../routes/profileBlogs')
 const tagsRoute = require('../routes/tagsRoute')
 const cors = require('cors');
-const dotenv = require('dotenv')
 
-dotenv.config();
 const app = express()
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017'
+console.log('DB_URL:', process.env.DB_URL);
+
+
+
+// process.env.DB_URL = "mongodb+srv://himanshudangwal99:hd27855647@cluster0.fmw4tal.mongodb.net/newton?retryWrites=true&w=majority";
+
+// const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017';
+// console.log('DB_URL:', dbUrl); // Should print the MongoDB URI
+
+
 
 app.use(cors());
+// console.log('Process Env:', process.env); // Print all environment variables
 
-async function connectToMongo(){
-   mongoose.set("strictQuery", false);
-    mongoose.connect(dbUrl);
-    console.log("Succesfully connected to mongoDB database")
+async function connectToMongo() {
+    mongoose.set("strictQuery", false);
+    try {
+        await mongoose.connect(dbUrl);
+        console.log("Successfully connected to MongoDB database");
+        console.log("Connected to database:", mongoose.connection.name); // Logs the database name
+    } catch (err) {
+        console.error("Error connecting to MongoDB:", err);
+    }
 }
+
 
 connectToMongo().catch(err => console.log("Some error"));
 

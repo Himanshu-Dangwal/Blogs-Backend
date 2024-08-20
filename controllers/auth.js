@@ -13,6 +13,10 @@ module.exports.createUser = async (req, res) => {
     const { username, email, password } = req.body
     const user = new User({ username, email, password })
     const resp = await user.save()
+
+    // Log the saved user document
+    console.log('User saved:', resp);
+
     const data = {
         user: { id: user._id }
     }
