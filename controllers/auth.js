@@ -28,12 +28,7 @@ module.exports.createUser = async (req, res) => {
 module.exports.loginUser = async (req, res) => {
     const { username, password } = req.body
     const foundUser = await User.findAndValidate(username, password)
-    if (foundUser) {
-        const data = {
-            user: { id: foundUser._id }
-        }
-        const authToken = jwt.sign(data, secretKey)
-        res.status(201).json({ success: true, authToken })
+     
     } else {
         res.status(400).json({message : "Invalid credentials"})
     }
